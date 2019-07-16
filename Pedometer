@@ -1,0 +1,34 @@
+import UIKit
+import CoreMotion
+
+class ViewController: UIViewController {
+
+    var Pedometer = CMPedometer()
+    
+    @IBOutlet var SpeedLabel: UILabel!
+    
+    @IBOutlet var DistnaceLabel: UILabel!
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
+        Pedometer.startUpdates(from: NSDate() as Date) { (data, error) in
+            guard let activityDate = data, error == nil else{
+                
+                print("You have an error\(error)")
+                return
+            }
+            DispatchQueue.main.async {
+                print("Steps: \(activityDate.numberOfSteps)")
+                self.SpeedLabel.text = (activityDate.currentPace)?.stringValue
+                print("Distance Covered: \(activityDate.distance)")
+                self.DistnaceLabel.text = (activityDate.distance)?.stringValue
+                
+            }
+            
+            
+        }
+    }
+
+
+}
+
